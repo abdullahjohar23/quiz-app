@@ -1,0 +1,22 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "quizapp-4e37a",
+                    "appId": "1:392187918962:android:7f563598b429aadc3760eb",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "quizapp-4e37a",
+                    "configurations": {
+                        "android": "1:392187918962:android:7f563598b429aadc3760eb",
+                        "ios": "1:392187918962:ios:d9a6e7ad84e325ec3760eb"
+                    }
+                }
+            }
+        }
+    }
+}
