@@ -115,7 +115,11 @@ class _AdminLoginState extends State<AdminLogin> {
                                                             child: Center(
                                                                 child: TextFormField(
                                                                     controller: userpasscontroller,
-                                                                    obscureText: true,
+                                                                    obscureText: true, // Hey, this is a password field — don’t show the actual characters being typed. Instead, it shows symbols (like dots or stars)
+                                                                    obscuringCharacter: '●', // This controls what symbol is used to hide the actual password. You can use a star *, a dot ●, or any other character. It replaces the real letters with your chosen symbol
+                                                                    enableSuggestions: false, // This turns off suggestions like autofill or “you typed this before”. Since it's a password, we don't want the app to suggest anything the user typed earlier
+                                                                    autocorrect: false, // This disables autocorrect. Otherwise, Flutter might try to “fix” what the user is typing — which makes no sense for passwords.
+                                                                    keyboardType: TextInputType.visiblePassword, // This chooses the keyboard type for the field. visiblePassword gives users a keyboard layout meant for typing passwords (e.g., no autocorrect, sometimes includes show/hide eye icon on some platforms)
                                                                     validator: (value) {
                                                                         if (value == null || value.isEmpty) {
                                                                             return 'Please Enter Password';
