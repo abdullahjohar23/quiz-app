@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/pages/add_quiz.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AdminLogin extends StatefulWidget {
     const AdminLogin({super.key});
@@ -70,6 +72,7 @@ class _AdminLoginState extends State<AdminLogin> {
                                                 child: Column(
                                                     children: [
                                                         SizedBox(height: 50),
+                                                        
                                                         //* Username
                                                         Container(
                                                             padding: EdgeInsets.only(top: 5, left: 20, bottom: 5),
@@ -138,17 +141,23 @@ class _AdminLoginState extends State<AdminLogin> {
                                                         SizedBox(height: 40),
 
                                                         //* Login Button
-                                                        Container(
-                                                            padding: EdgeInsets.symmetric(vertical: 12),
-                                                            margin: EdgeInsets.symmetric(horizontal: 20),
-                                                            width: deviceWidth,
-                                                            decoration: BoxDecoration(
-                                                                color: Colors.black,
-                                                                borderRadius: BorderRadius.circular(10)
-                                                            ),
-                                                        
-                                                            child: Center(
-                                                                child: Text('Login', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),),
+                                                        GestureDetector(
+                                                            onTap: () {
+                                                                LoginAdmin();
+                                                            },
+                                                            
+                                                            child: Container(
+                                                                padding: EdgeInsets.symmetric(vertical: 12),
+                                                                margin: EdgeInsets.symmetric(horizontal: 20),
+                                                                width: deviceWidth,
+                                                                decoration: BoxDecoration(
+                                                                    color: Colors.black,
+                                                                    borderRadius: BorderRadius.circular(10)
+                                                                ),
+                                                            
+                                                                child: Center(
+                                                                    child: Text('Login', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),),
+                                                                ),
                                                             ),
                                                         ),
                                                     ],
@@ -164,5 +173,36 @@ class _AdminLoginState extends State<AdminLogin> {
             ),
         );
     }
-}
 
+    // our function to login via data from firebase
+    LoginAdmin() {
+        FirebaseFirestore.instance.collection('Admin').get().then((snapshot) {
+            bool found = false;
+
+            for (var result in snapshot.docs) {
+                String firestoreId = result.data()['id'];
+                String firestorePassword = result.data()['password'];
+
+                if (firestoreId == usernamecontroller.text.trim() && firestorePassword == userpasscontroller.text.trim()) {
+                    found = true;
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => AddQuiz()),
+                    );
+                    break;
+                }
+            }
+
+            if (!found) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: Text(
+                            'Invalid username or password',
+                            style: TextStyle(fontSize: 18),
+                        ),
+                    ),
+                );
+            }
+        });
+    }
+}
